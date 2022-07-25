@@ -1,4 +1,4 @@
-# manager
+# Village Interest Calculator and Manager
 
 A new Flutter project.
 
