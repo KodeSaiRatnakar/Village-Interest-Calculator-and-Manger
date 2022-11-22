@@ -6,7 +6,7 @@ String date_select = "Select Date";
 TextEditingController controller_name = TextEditingController();
 TextEditingController controller_interest_rate = TextEditingController();
 TextEditingController controller_amount = TextEditingController();
-
+TextEditingController phoneNumberController = TextEditingController();
 List<BarrowedData> barrowers_list = [];
 
 class BorrowingPage extends StatefulWidget {
@@ -70,13 +70,16 @@ class _BorrowingPageState extends State<BorrowingPage> {
                                 "Total Barrowings : ",
                                 style: TextStyle(fontSize: 20),
                               ),
-                              Text(
-                                Brain.total_amount(snapshot.data == null
-                                        ? []
-                                        : snapshot.data)
-                                    .toString(),
-                                style: TextStyle(
-                                    fontSize: 25, fontWeight: FontWeight.bold),
+                              FittedBox(
+                                child: Text(
+                                  Brain.total_amount(snapshot.data == null
+                                          ? []
+                                          : snapshot.data)
+                                      .toStringAsFixed(2),
+                                  style: TextStyle(
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               )
                             ],
                           ),
@@ -92,14 +95,17 @@ class _BorrowingPageState extends State<BorrowingPage> {
                                   fontSize: 20,
                                 ),
                               ),
-                              Text(
-                                Brain.total_interest_amount(
-                                        snapshot.data == null
-                                            ? []
-                                            : snapshot.data)
-                                    .toString(),
-                                style: TextStyle(
-                                    fontSize: 25, fontWeight: FontWeight.bold),
+                              FittedBox(
+                                child: Text(
+                                  Brain.total_interest_amount(
+                                          snapshot.data == null
+                                              ? []
+                                              : snapshot.data)
+                                      .toStringAsFixed(2),
+                                  style: TextStyle(
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               )
                             ],
                           ),
@@ -115,14 +121,15 @@ class _BorrowingPageState extends State<BorrowingPage> {
                                   fontSize: 20,
                                 ),
                               ),
-                              Text(
-                                Brain.total_barrowed_amount(
-                                        snapshot.data == null
-                                            ? []
-                                            : snapshot.data)
-                                    .toString(),
-                                style: TextStyle(
-                                    fontSize: 25, fontWeight: FontWeight.bold),
+                              FittedBox(
+                                child: Text(
+                                  Brain.total_barrowed_amount(
+                                          snapshot.data == null
+                                              ? []
+                                              : snapshot.data)
+                                      .toStringAsFixed(2),
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
                               )
                             ],
                           ),
@@ -170,6 +177,7 @@ class _BorrowingPageState extends State<BorrowingPage> {
               controller_name,
               controller_interest_rate,
               controller_amount,
+              phoneNumberController,
               refresh_widget,
             );
             // Navigator.push(context,
@@ -186,6 +194,7 @@ Future bottom_page_viewer(
   TextEditingController controller_name,
   TextEditingController controller_interest_rate,
   TextEditingController controller_amount,
+  TextEditingController phoneNumberController,
   Function list_adder,
 ) {
   return showModalBottomSheet(
@@ -207,13 +216,25 @@ Future bottom_page_viewer(
             Row(
               children: [
                 Expanded(
-                  child: Text_Field_Details(
-                      controller_interest_rate, "Enter Interest rate", true),
+                  child: Text_Field_Details(controller_interest_rate,
+                      "Enter Interest rate in ₹", true),
                 ),
                 Expanded(
                     child: Text_Field_Details(
                         controller_amount, "Enter Amount", true))
               ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                  height: 50,
+                  child: TextField(
+                    controller: phoneNumberController,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black),
+                            borderRadius: BorderRadius.circular(5))),
+                  )),
             ),
             GestureDetector(
               onTap: () {
@@ -262,7 +283,8 @@ Future bottom_page_viewer(
                               date_time,
                               double.parse(controller_amount.text),
                               double.parse(controller_interest_rate.text))),
-                      0));
+                      0,
+                      ""));
                 }
 
                 list_adder();
@@ -467,8 +489,9 @@ class _List_WidgetState extends State<List_Widget> {
               Text("Interest Rate : ${widget.interest_rate}"),
               Text("Date : ${widget.date}"),
               Text("Amount Paid : ${widget.amount_paid_back}"),
-              Text("Interest Amount : ${widget.interest_amount}"),
-              Text("Total Amount : ${widget.total_amount}"),
+              Text(
+                  "Interest Amount : ${widget.interest_amount.toStringAsFixed(2)}"),
+              Text("Total Amount : ${widget.total_amount.toStringAsFixed(2)}"),
             ],
           ),
         ),

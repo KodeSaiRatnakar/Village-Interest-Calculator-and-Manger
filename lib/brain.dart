@@ -52,6 +52,7 @@ class BarrowedData {
   int id = 0;
 
   String name = "";
+  String phoneNumber = "";
   double interest_rate = 0.0;
   double amount = 0.00;
 
@@ -62,15 +63,24 @@ class BarrowedData {
   double interest_amount = 0.0;
   double total_amount = 0.0;
 
-  BarrowedData(this.id, this.name, this.interest_rate, this.amount, this.date,
-      this.interest_amount, this.total_amount, this.amount_paid_back);
+  BarrowedData(
+      this.id,
+      this.name,
+      this.interest_rate,
+      this.amount,
+      this.date,
+      this.interest_amount,
+      this.total_amount,
+      this.amount_paid_back,
+      this.phoneNumber);
 
   Map<String, dynamic> to_json(BarrowedData data) {
     return {
       "name": data.name,
       "date": data.date.toString(),
       "interest_rate": data.interest_rate,
-      "amount": data.amount
+      "amount": data.amount,
+      "phoneNumber": data.phoneNumber
     };
   }
 }
@@ -80,7 +90,7 @@ class Database_Barrower {
     return openDatabase(
       join(await getDatabasesPath(), "database.db"),
       onCreate: (db, version) async => await db.execute(
-          '''CREATE TABLE Barrowers(id INTEGER PRIMARY KEY AUTOINCREMENT ,name TEXT,date TEXT,interest_rate TEXT,amount TEXT)'''),
+          '''CREATE TABLE Barrowers(id INTEGER PRIMARY KEY AUTOINCREMENT ,name TEXT,date TEXT,interest_rate TEXT,amount TEXT,phoneNumber TEXT)'''),
       version: 1,
     );
   }
@@ -92,9 +102,10 @@ class Database_Barrower {
     final double amount = data.amount;
     final double interest_rate = data.interest_rate;
     final DateTime date = data.date;
+    final String phoneNumber = data.phoneNumber;
 
     return db.rawInsert(
-        '''INSERT INTO Barrowers('name','date','interest_rate','amount') VALUES ('${name}','${date.toString()}', '${interest_rate}', '${amount}')''');
+        '''INSERT INTO Barrowers('name','date','interest_rate','amount','phoneNumber') VALUES ('${name}','${date.toString()}', '${interest_rate}', '${amount}, '${phoneNumber}')''');
 
     /*db.insert(
       "Barrowers",
@@ -128,7 +139,8 @@ class Database_Barrower {
                   double.parse(data_list[i]['amount']),
                   double.parse(data_list[i]['interest_rate'])) +
               double.parse(data_list[i]['amount'])),
-          0));
+          0,
+          data_list[i]['phoneNumber']));
     }
 
     return list;
