@@ -105,7 +105,7 @@ class Database_Barrower {
     final String phoneNumber = data.phoneNumber;
 
     return db.rawInsert(
-        '''INSERT INTO Barrowers('name','date','interest_rate','amount','phoneNumber') VALUES ('${name}','${date.toString()}', '${interest_rate}', '${amount}, '${phoneNumber}')''');
+        '''INSERT INTO Barrowers('name','date','interest_rate','amount','phoneNumber') VALUES ('${name}','${date.toString()}', '${interest_rate}', '${amount}', '${phoneNumber}')''');
 
     /*db.insert(
       "Barrowers",

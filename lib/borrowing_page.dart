@@ -33,7 +33,7 @@ class _BorrowingPageState extends State<BorrowingPage> {
 
     void refresh_widget() {
       setState(() {
-        BorrowingPage();
+        const BorrowingPage();
       });
     }
 
@@ -66,7 +66,7 @@ class _BorrowingPageState extends State<BorrowingPage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 "Total Barrowings : ",
                                 style: TextStyle(fontSize: 20),
                               ),
@@ -230,10 +230,18 @@ Future bottom_page_viewer(
                   height: 50,
                   child: TextField(
                     controller: phoneNumberController,
+                    keyboardType: TextInputType.phone,
                     decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black),
-                            borderRadius: BorderRadius.circular(5))),
+                      hintText: "Enter Mobile Number",
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black, width: 2),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
                   )),
             ),
             GestureDetector(
@@ -267,7 +275,8 @@ Future bottom_page_viewer(
                 if (controller_name.text != null &&
                     controller_amount.text != null &&
                     controller_interest_rate.text != null &&
-                    date_time != null) {
+                    date_time != null &&
+                    phoneNumberController.text.length == 10) {
                   Database_Barrower.write_data(BarrowedData(
                       0,
                       controller_name.text,
@@ -284,7 +293,7 @@ Future bottom_page_viewer(
                               double.parse(controller_amount.text),
                               double.parse(controller_interest_rate.text))),
                       0,
-                      ""));
+                      phoneNumberController.text));
                 }
 
                 list_adder();
@@ -294,6 +303,7 @@ Future bottom_page_viewer(
                 controller_interest_rate.clear();
                 controller_amount.clear();
                 controller_name.clear();
+                phoneNumberController.clear();
                 date_select = "Select Date";
               },
               child: Padding(
@@ -362,7 +372,8 @@ Widget list_view_items(
               total_amount: _barrowers_list[index].total_amount,
               interest_amount: _barrowers_list[index].interest_amount,
               amount_paid_back: _barrowers_list[index].amount_paid_back,
-              date: _barrowers_list[index].date),
+              date: _barrowers_list[index].date,
+              phoneNumber: _barrowers_list[index].phoneNumber),
           Positioned(
             child: GestureDetector(
               onTap: () {
@@ -370,7 +381,7 @@ Widget list_view_items(
                   context: context,
                   builder: (BuildContext context) => Dialog(
                     child: Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           gradient: LinearGradient(
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
@@ -448,6 +459,7 @@ class List_Widget extends StatefulWidget {
   double amount_paid_back = 0.0;
   double interest_amount = 0.0;
   double total_amount = 0.0;
+  String phoneNumber;
   DateTime date;
   List_Widget(
       {required this.mWidth,
@@ -459,6 +471,7 @@ class List_Widget extends StatefulWidget {
       required this.interest_amount,
       required this.amount_paid_back,
       required this.date,
+      required this.phoneNumber,
       Key? key})
       : super(key: key);
 
@@ -492,6 +505,7 @@ class _List_WidgetState extends State<List_Widget> {
               Text(
                   "Interest Amount : ${widget.interest_amount.toStringAsFixed(2)}"),
               Text("Total Amount : ${widget.total_amount.toStringAsFixed(2)}"),
+              Text("Phone Number : ${widget.phoneNumber}")
             ],
           ),
         ),
