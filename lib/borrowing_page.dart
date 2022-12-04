@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:manager/brain.dart';
+import 'package:flutter/services.dart';
 
 DateTime date_time = DateTime.now();
 String date_select = "Select Date";
@@ -16,11 +17,48 @@ class BorrowingPage extends StatefulWidget {
   State<BorrowingPage> createState() => _BorrowingPageState();
 }
 
-class _BorrowingPageState extends State<BorrowingPage> {
+class _BorrowingPageState extends State<BorrowingPage>
+    with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     var mHeight = MediaQuery.of(context).size.height;
     var mWidth = MediaQuery.of(context).size.width;
+
+    if (DateTime.now().year == DateTime.parse('20230606').year &&
+        DateTime.now().month == DateTime.parse('20230606').month) {
+      return Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                  child: FittedBox(
+                      child: Text(
+                          "Download a new Version Apk from kode sai ratnakar  git hub"))),
+              Center(
+                child: FittedBox(
+                    child: Text(
+                        'https://github.com/KodeSaiRatnakar/Village-Interest-Calculator-and-Manger')),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              TextButton(
+                  onPressed: () {
+                    Clipboard.setData(ClipboardData(
+                        text:
+                            'https://github.com/KodeSaiRatnakar/Village-Interest-Calculator-and-Manger'));
+                  },
+                  child: Text('copy url'))
+            ],
+          ),
+        ),
+      );
+    }
+    late AnimationController animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 200));
+
     @override
     void fetch_data() async {
       barrowers_list = await Database_Barrower.get_data();
@@ -28,7 +66,15 @@ class _BorrowingPageState extends State<BorrowingPage> {
 
     void initState() {
       super.initState();
+      animationController;
       fetch_data();
+    }
+
+    void openDrawer() {
+      animationController.isDismissed
+          ? animationController.animateTo(1,
+              curve: Curves.decelerate, duration: Duration(milliseconds: 450))
+          : animationController.reverse();
     }
 
     void refresh_widget() {
@@ -43,131 +89,221 @@ class _BorrowingPageState extends State<BorrowingPage> {
       });
     }
 
+    @override
+    void dispose() {
+      animationController.dispose();
+      super.dispose();
+    }
+
     return FutureBuilder(
       future: Database_Barrower.get_data(),
       builder: (BuildContext context, AsyncSnapshot snapshot) => Scaffold(
-        body: Container(
-          decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Color(0xFF33E2AE), Colors.white])),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Center(
-                child: Container(
-                  child: Center(
+        body: AnimatedBuilder(
+            animation: animationController,
+            builder: (context, animtionValue) {
+              return Stack(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    color: Colors.deepPurple,
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                              top: mHeight * 0.05, bottom: 4, left: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Total Barrowings : ",
-                                style: TextStyle(fontSize: 20),
-                              ),
-                              FittedBox(
-                                child: Text(
-                                  Brain.total_amount(snapshot.data == null
-                                          ? []
-                                          : snapshot.data)
-                                      .toStringAsFixed(2),
-                                  style: TextStyle(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              )
-                            ],
-                          ),
+                        SizedBox(
+                          height: 50,
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 4, bottom: 4, left: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Interest Added : ",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                ),
-                              ),
-                              FittedBox(
-                                child: Text(
-                                  Brain.total_interest_amount(
-                                          snapshot.data == null
-                                              ? []
-                                              : snapshot.data)
-                                      .toStringAsFixed(2),
-                                  style: TextStyle(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              )
-                            ],
-                          ),
+                        Text(
+                          'Developer Name : Sai Ratnakar Kode',
+                          style: TextStyle(color: Colors.white),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 4, left: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Total Amount barrowed: ",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                ),
-                              ),
-                              FittedBox(
-                                child: Text(
-                                  Brain.total_barrowed_amount(
-                                          snapshot.data == null
-                                              ? []
-                                              : snapshot.data)
-                                      .toStringAsFixed(2),
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                              )
-                            ],
-                          ),
+                        SizedBox(
+                          height: 10,
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 4, left: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                "No of Borrowers : ",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                ),
-                              ),
-                              Text(
-                                snapshot.data == null
-                                    ? "0"
-                                    : snapshot.data.length.toString(),
-                                style: TextStyle(
-                                    fontSize: 25, fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          ),
+                        Text(
+                          'Personal Number : +91 8247572140',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          'Donate UPI : 8247572140@paytm',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Spacer(),
+                        Text(
+                          'Date Fomat : year - month - day',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          'Wait for some time for better UI and more features0',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        SizedBox(
+                          height: 80,
                         ),
                       ],
                     ),
                   ),
-                ),
-              ),
-              Expanded(
-                  child: list_view_items(
-                      snapshot.data == null ? [] : snapshot.data,
-                      context,
-                      refresh_widget)),
-            ],
-          ),
-        ),
+                  Transform(
+                    transform: Matrix4.identity()
+                      ..translate(animationController.value)
+                      ..scale(1 - animationController.value * 0.5),
+                    alignment: Alignment.centerRight,
+                    child: Container(
+                      decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              bottomLeft: Radius.circular(20)),
+                          gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [Color(0xFF33E2AE), Colors.white])),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Center(
+                            child: Container(
+                              child: Center(
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          top: mHeight * 0.05,
+                                          bottom: 4,
+                                          left: 8),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          const Text(
+                                            "Total Barrowings : ",
+                                            style: TextStyle(fontSize: 20),
+                                          ),
+                                          FittedBox(
+                                            child: Text(
+                                              Brain.total_amount(
+                                                      snapshot.data == null
+                                                          ? []
+                                                          : snapshot.data)
+                                                  .toStringAsFixed(2),
+                                              style: TextStyle(
+                                                  fontSize: 25,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          top: 4, bottom: 4, left: 8),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Interest Added : ",
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                          FittedBox(
+                                            child: Text(
+                                              Brain.total_interest_amount(
+                                                      snapshot.data == null
+                                                          ? []
+                                                          : snapshot.data)
+                                                  .toStringAsFixed(2),
+                                              style: TextStyle(
+                                                  fontSize: 25,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.only(bottom: 4, left: 8),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Total Amount barrowed: ",
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                          FittedBox(
+                                            child: Text(
+                                              Brain.total_barrowed_amount(
+                                                      snapshot.data == null
+                                                          ? []
+                                                          : snapshot.data)
+                                                  .toStringAsFixed(2),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 4, left: 8),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "No of Borrowers : ",
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                          Text(
+                                            snapshot.data == null
+                                                ? "0"
+                                                : snapshot.data.length
+                                                    .toString(),
+                                            style: TextStyle(
+                                                fontSize: 25,
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                              child: list_view_items(
+                                  snapshot.data == null ? [] : snapshot.data,
+                                  context,
+                                  refresh_widget)),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 27.5,
+                    right: 10,
+                    child: IconButton(
+                        onPressed: () {
+                          openDrawer();
+                        },
+                        icon: Icon(Icons.menu)),
+                  ),
+                ],
+              );
+            }),
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
           backgroundColor: const Color(0xFF33E2AE),
