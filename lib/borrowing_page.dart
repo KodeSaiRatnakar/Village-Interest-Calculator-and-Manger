@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:manager/brain.dart';
 import 'package:flutter/services.dart';
-
+/*
 DateTime date_time = DateTime.now();
 String date_select = "Select Date";
 TextEditingController controller_name = TextEditingController();
@@ -649,3 +649,4 @@ class _List_WidgetState extends State<List_Widget> {
     );
   }
 }
+*/

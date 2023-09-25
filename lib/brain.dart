@@ -47,7 +47,7 @@ class Brain {
     return sum;
   }
 }
-
+/*
 class BarrowedData {
   int id = 0;
 
@@ -152,3 +152,4 @@ class Database_Barrower {
     db.rawDelete("DELETE FROM $table WHERE id = ?", [id]);
   }
 }
+*/
