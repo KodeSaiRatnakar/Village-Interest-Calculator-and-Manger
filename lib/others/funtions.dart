@@ -1,4 +1,4 @@
-import '../imports.dart';
+part of 'others.dart';
 
 Future<void> initHive() async {
   await Hive.initFlutter();

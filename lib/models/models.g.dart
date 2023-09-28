@@ -22,8 +22,7 @@ class BarrowedDataAdapter extends TypeAdapter<BarrowedData> {
       interestRate: fields[3] as double,
       amount: fields[4] as double,
       date: fields[5] as DateTime,
-      interestAmount: fields[7] as double,
-      totalAmount: fields[8] as double,
+      totalAmount: fields[7] as double,
       amountPaidBack: fields[6] as double,
       phoneNumber: fields[2] as String,
     );
@@ -32,7 +31,7 @@ class BarrowedDataAdapter extends TypeAdapter<BarrowedData> {
   @override
   void write(BinaryWriter writer, BarrowedData obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -48,8 +47,6 @@ class BarrowedDataAdapter extends TypeAdapter<BarrowedData> {
       ..writeByte(6)
       ..write(obj.amountPaidBack)
       ..writeByte(7)
-      ..write(obj.interestAmount)
-      ..writeByte(8)
       ..write(obj.totalAmount);
   }
 

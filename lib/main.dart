@@ -1,16 +1,16 @@
+import 'package:manager/pages/pages.dart';
+
 import 'imports.dart';
 
 void main() async {
-  runApp(
+  await initAppData();
+  return runApp(
     const ProviderScope(child: MyApp()),
   );
-  await initAppData();
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
@@ -36,28 +36,29 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Color(0xFF33E2AE), Colors.white])),
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFF33E2AE), Colors.white],
+          ),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             GestureDetector(
-              onTap: () {
-                print("TOUCHED");
-              },
+              onTap: () {},
               child: Container(
                 width: mWidth * 0.35,
                 height: mHeight * 0.1,
                 child: const Center(
-                    child: Text(
-                  "Portfolio",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
+                  child: Text(
+                    "Portfolio",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                )),
+                ),
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.all(Radius.circular(15)),
                   border: Border.all(width: 2, color: Colors.black),
@@ -76,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const Lending_page(),
+                          builder: (context) => const BorrowingPage(),
                         ),
                       );
                     },
@@ -88,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const Lending_page(),
+                          builder: (context) => const LendingPage(),
                         ),
                       );
                     },
@@ -104,8 +105,8 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class BoxButtons extends StatefulWidget {
-  var m_height;
-  var m_width;
+  final double m_height;
+  final double m_width;
   String data = "";
   BoxButtons(
       {required this.m_width,
@@ -135,8 +136,14 @@ class _BoxButtonsState extends State<BoxButtons> {
       height: widget.m_height * 0.1,
       width: widget.m_width * 0.4,
       decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(15)),
-          border: Border.all(color: Colors.black, width: 2)),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(15),
+        ),
+        border: Border.all(
+          color: Colors.black,
+          width: 2,
+        ),
+      ),
     );
   }
 }

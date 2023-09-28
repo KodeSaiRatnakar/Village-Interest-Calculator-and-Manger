@@ -24,9 +24,6 @@ class BarrowedData {
   final double amountPaidBack;
 
   @HiveField(7)
-  final double interestAmount;
-
-  @HiveField(8)
   final double totalAmount;
 
   const BarrowedData({
@@ -35,9 +32,12 @@ class BarrowedData {
     required this.interestRate,
     required this.amount,
     required this.date,
-    required this.interestAmount,
     required this.totalAmount,
     required this.amountPaidBack,
     required this.phoneNumber,
   });
+
+  double get interestAmount {
+    return Brain.interestCalculator(date, amount, interestRate);
+  }
 }
