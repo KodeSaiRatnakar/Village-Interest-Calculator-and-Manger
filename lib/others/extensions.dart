@@ -12,4 +12,16 @@ extension ContextExt on BuildContext {
   Size get mediaSize {
     return MediaQuery.of(this).size;
   }
+
+  double get appBarHeight {
+    return deviceHeight * 0.08;
+  }
+
+  TextTheme get textTheme {
+    return Theme.of(this).textTheme;
+  }
+
+  ThemeData get themeData {
+    return Theme.of(this);
+  }
 }

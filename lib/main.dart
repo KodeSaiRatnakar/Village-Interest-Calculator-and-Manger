@@ -9,14 +9,16 @@ void main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyApp extends ConsumerWidget {
+  const MyApp({super.key});
   @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeData = ref.watch(themeDataManagerProvider);
+    return MaterialApp(
       title: 'Village Interest Manager',
-      home: MyHomePage(),
+      home: const MyHomePage(),
       debugShowCheckedModeBanner: false,
+      theme: themeData.theme,
     );
   }
 }
@@ -50,6 +52,10 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Container(
                 width: mWidth * 0.35,
                 height: mHeight * 0.1,
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(15)),
+                  border: Border.all(width: 2, color: Colors.black),
+                ),
                 child: const Center(
                   child: Text(
                     "Portfolio",
@@ -58,10 +64,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(15)),
-                  border: Border.all(width: 2, color: Colors.black),
                 ),
               ),
             ),

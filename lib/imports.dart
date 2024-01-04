@@ -4,3 +4,4 @@ export 'package:hive_flutter/adapters.dart';
 export 'package:manager/others/others.dart';
 
 export 'models/models.dart';
+export 'theme/theme.dart';
