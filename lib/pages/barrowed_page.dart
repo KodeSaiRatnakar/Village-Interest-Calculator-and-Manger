@@ -300,11 +300,11 @@ class _BorrowingPageState extends State<BorrowingPage>
           },
         ),
         floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add),
           backgroundColor: const Color(0xFF33E2AE),
           onPressed: () {
             bottomPageViewer(context);
           },
+          child: const Icon(Icons.add),
         ),
       ),
     );
@@ -454,15 +454,15 @@ Future<void> bottomPageViewer(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.4,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(),
+                    ),
                     child: const Center(
                         child: Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Text("Submit"),
                     )),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(),
-                    ),
                   ),
                 ),
               )
@@ -525,6 +525,8 @@ Widget listViewItmes(
             mediaSize: mediaSize,
           ),
           Positioned(
+            right: context.deviceWidth * 0.05,
+            height: context.deviceHeight * 0.08,
             child: GestureDetector(
               onTap: () {
                 showDialog(
@@ -548,14 +550,14 @@ Widget listViewItmes(
                                 builder: (context, ref, child) {
                                   return GestureDetector(
                                     child: Container(
-                                      child: const Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: Text("Yes"),
-                                      ),
                                       decoration: BoxDecoration(
                                           border: Border.all(),
                                           borderRadius:
                                               BorderRadius.circular(5)),
+                                      child: const Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Text("Yes"),
+                                      ),
                                     ),
                                     onTap: () {
                                       ref
@@ -572,13 +574,13 @@ Widget listViewItmes(
                               ),
                               GestureDetector(
                                 child: Container(
-                                  child: const Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: Text("No"),
-                                  ),
                                   decoration: BoxDecoration(
                                     border: Border.all(),
                                     borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text("No"),
                                   ),
                                 ),
                                 onTap: () {
@@ -598,8 +600,6 @@ Widget listViewItmes(
                 child: Icon(Icons.delete),
               ),
             ),
-            right: context.deviceWidth * 0.05,
-            height: context.deviceHeight * 0.08,
           ),
         ],
       );

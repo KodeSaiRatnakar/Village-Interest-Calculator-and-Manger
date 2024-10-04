@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:manager/pages/pages.dart';
 
 import 'imports.dart';
@@ -50,6 +51,10 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Container(
                 width: mWidth * 0.35,
                 height: mHeight * 0.1,
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(15)),
+                  border: Border.all(width: 2, color: Colors.black),
+                ),
                 child: const Center(
                   child: Text(
                     "Portfolio",
@@ -58,10 +63,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(15)),
-                  border: Border.all(width: 2, color: Colors.black),
                 ),
               ),
             ),
@@ -72,7 +73,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   GestureDetector(
                     child: BoxButtons(
-                        m_width: mWidth, m_height: mHeight, data: "Borrowing"),
+                        deviceWidth: mWidth,
+                        deviceHeight: mHeight,
+                        data: "Borrowing"),
                     onTap: () {
                       Navigator.push(
                         context,
@@ -84,7 +87,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   GestureDetector(
                     child: BoxButtons(
-                        m_width: mWidth, m_height: mHeight, data: "Lendings"),
+                        deviceWidth: mWidth,
+                        deviceHeight: mHeight,
+                        data: "Lendings"),
                     onTap: () {
                       Navigator.push(
                         context,
@@ -104,37 +109,22 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class BoxButtons extends StatefulWidget {
-  final double m_height;
-  final double m_width;
-  String data = "";
-  BoxButtons(
-      {required this.m_width,
-      required this.m_height,
-      required this.data,
-      Key? key})
-      : super(key: key);
+class BoxButtons extends StatelessWidget {
+  final double deviceHeight;
+  final double deviceWidth;
+  final String data;
+  const BoxButtons({
+    Key? key,
+    required this.deviceHeight,
+    required this.deviceWidth,
+    required this.data,
+  }) : super(key: key);
 
-  @override
-  State<BoxButtons> createState() => _BoxButtonsState();
-}
-
-class _BoxButtonsState extends State<BoxButtons> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Center(
-        child: Text(
-          widget.data,
-          style: const TextStyle(
-              color: Color(
-                0xFF0C093C,
-              ),
-              fontWeight: FontWeight.bold),
-        ),
-      ),
-      height: widget.m_height * 0.1,
-      width: widget.m_width * 0.4,
+      height: deviceHeight * 0.1,
+      width: deviceWidth * 0.4,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(
           Radius.circular(15),
@@ -142,6 +132,16 @@ class _BoxButtonsState extends State<BoxButtons> {
         border: Border.all(
           color: Colors.black,
           width: 2,
+        ),
+      ),
+      child: Center(
+        child: Text(
+          data,
+          style: const TextStyle(
+              color: Color(
+                0xFF0C093C,
+              ),
+              fontWeight: FontWeight.bold),
         ),
       ),
     );
